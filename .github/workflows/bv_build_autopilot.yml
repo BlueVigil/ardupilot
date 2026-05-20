@@ -1,0 +1,38 @@
+name: BV Build Ardupilot
+
+on:
+  push:
+    tags: [ "v*-bv" ]
+  pull_request:
+    tags: [ "v*-bv" ]
+
+jobs:
+  build:
+
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: install prerequisites
+      run: SKIP_AP_GRAPHIC_ENV=1 Tools/environment_install/install-prereqs-ubuntu.sh -y
+    - name: init submodules
+      run: ./Tools/gittools/submodule-sync.sh
+    - name: configure waf board
+      run: |
+          . ~/.profile
+          ./waf configure --board CubeOrangePlus-bdshot
+    - name: waf compile
+      run: |
+          . ~/.profile
+          ./waf build copter
+    - uses: actions/upload-artifact@v7
+      with:
+          name: CubeOrangePlus-bdshot
+          path: ./build/CubeOrangePlus-bdshot/bin/*
+    - name: Create archive
+      run: |
+          zip -r ArduPilot-${{ github.ref_name }}-latest.zip ./build/CubeOrangePlus-bdshot/bin/*
+    - name: Create Github Release
+      uses: softprops/action-gh-release@v2
+      with:
+          files: ./ArduPilot-${{ github.ref_name }}-latest.zip
