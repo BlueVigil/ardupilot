@@ -16,7 +16,7 @@
 #endif
 
 #ifndef RANGEFINDER_GLITCH_NUM_SAMPLES
- # define RANGEFINDER_GLITCH_NUM_SAMPLES  3   // number of rangefinder glitches in a row to take new reading
+ # define RANGEFINDER_GLITCH_NUM_SAMPLES  20   // number of rangefinder glitches in a row to take new reading
 #endif
 
 #ifndef RANGEFINDER_GLITCH_ALT_CM
