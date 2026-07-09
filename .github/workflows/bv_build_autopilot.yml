@@ -27,7 +27,7 @@ jobs:
           ./waf build copter
     - uses: actions/upload-artifact@v7
       with:
-          name: CubeOrangePlus-bdshot
+          name: ${{ github.ref_name }}-CubeOrangePlus-bdshot
           path: ./build/CubeOrangePlus-bdshot/bin/*
     - name: Create archive
       run: |
